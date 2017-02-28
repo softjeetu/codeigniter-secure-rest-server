@@ -12,9 +12,9 @@ require APPPATH . '/libraries/REST_Controller.php';
  * @package         CodeIgniter
  * @subpackage      Rest Server
  * @category        Controller
- * @author          Phil Sturgeon, Chris Kacerguis
+ * @author          Trivialworks
  * @license         MIT
- * @link            https://github.com/chriskacerguis/codeigniter-restserver
+ * @link            https://github.com/jaykaypee/codeigniter-secure-rest-server
  */
 class Example extends REST_Controller {
 
@@ -47,28 +47,27 @@ class Example extends REST_Controller {
                 //if the login is successful
                 $userData = $qry->row();                                
                 $access_token = $this->key->generate(1, 0, $userData->userID);
-                $response["status"]  = true;                
-                $response["message"] = "login successfully";
-                $response["data"]    = $userData; 
-                $response["access_token"]  = $access_token;
-                $this->response($response, 200); // CREATED (200) being the HTTP response code
+                $response[$this->config->item('rest_status_field_name')]  = true;                
+                $response[$this->config->item('rest_message_field_name')] = "login successfully";
+                $response[$this->config->item('rest_key_name')]  = $access_token;
+                $response["data"]    = $userData;                 
+                $this->response($response, REST_Controller::HTTP_OK); // CREATED (200) being the HTTP response code
             }
             else
             { 
                  //if the login was un-successful
-                    $response["status"]  = false;
-                    $response["message"] = "login failed";
-                    $response["data"]    = "";   
-                    $this->response($response, 400); // CREATED (200) being the HTTP response code
+                    $response[$this->config->item('rest_status_field_name')]  = false;
+                    $response[$this->config->item('rest_message_field_name')] = "login failed";                       
+                    $this->response($response, REST_Controller::HTTP_NON_AUTHORITATIVE_INFORMATION); // not authoritative (203) being the HTTP response code
             }
         }
         else
         {      
                 //set the flash data error message if there is one
-                $response["status"] = false;
-                $response["message"] = validation_errors();
+                $response[$this->config->item('rest_status_field_name')]  = false;
+                $response[$this->config->item('rest_message_field_name')] = validation_errors();
                 $response["data"] = "";                   
-                $this->response($response, 400); // CREATED (200) being the HTTP response code
+                $this->response($response, REST_Controller::HTTP_BAD_REQUEST); // Bad request (400) being the HTTP response code
         } 
     }
     

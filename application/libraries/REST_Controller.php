@@ -9,9 +9,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @package         CodeIgniter
  * @subpackage      Libraries
  * @category        Libraries
- * @author          Phil Sturgeon, Chris Kacerguis
+ * @author          Trivialworks
  * @license         MIT
- * @link            https://github.com/chriskacerguis/codeigniter-restserver
+ * @link            https://github.com/jaykaypee/codeigniter-secure-rest-server
  * @version         3.0.0
  */
 abstract class REST_Controller extends CI_Controller {
